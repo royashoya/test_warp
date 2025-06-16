@@ -9,24 +9,75 @@ Supports different UUID versions and batch generation.
 import uuid
 import argparse
 import sys
+from typing import List, Optional
 
-def generate_uuid1(count=1):
-    """Generate UUID1 (MAC address and timestamp based)"""
+# Constants
+MAX_UUID_COUNT = 10000  # Reasonable limit to prevent memory issues
+DEFAULT_OUTPUT_FILE = "uuids.txt"
+
+def generate_uuid1(count: int = 1) -> List[str]:
+    """Generate UUID1 (MAC address and timestamp based)
+    
+    Args:
+        count: Number of UUIDs to generate
+        
+    Returns:
+        List of UUID1 strings
+        
+    Raises:
+        ValueError: If count is less than 1
+    """
+    if count < 1:
+        raise ValueError("Count must be at least 1")
+    if count > MAX_UUID_COUNT:
+        raise ValueError(f"Count cannot exceed {MAX_UUID_COUNT}")
     return [str(uuid.uuid1()) for _ in range(count)]
 
-def generate_uuid4(count=1):
-    """Generate UUID4 (random)"""
+def generate_uuid4(count: int = 1) -> List[str]:
+    """Generate UUID4 (random)
+    
+    Args:
+        count: Number of UUIDs to generate
+        
+    Returns:
+        List of UUID4 strings
+        
+    Raises:
+        ValueError: If count is less than 1
+    """
+    if count < 1:
+        raise ValueError("Count must be at least 1")
+    if count > MAX_UUID_COUNT:
+        raise ValueError(f"Count cannot exceed {MAX_UUID_COUNT}")
     return [str(uuid.uuid4()) for _ in range(count)]
 
-def generate_uuid3(namespace, name, count=1):
-    """Generate UUID3 (MD5 hash based)"""
+def generate_uuid3(namespace: uuid.UUID, name: str, count: int = 1) -> List[str]:
+    """Generate UUID3 (MD5 hash based)
+    
+    Args:
+        namespace: UUID namespace to use
+        name: Base name for UUID generation
+        count: Number of UUIDs to generate
+        
+    Returns:
+        List of UUID3 strings
+    """
     return [str(uuid.uuid3(namespace, f"{name}_{i}")) for i in range(count)]
 
-def generate_uuid5(namespace, name, count=1):
-    """Generate UUID5 (SHA-1 hash based)"""
+def generate_uuid5(namespace: uuid.UUID, name: str, count: int = 1) -> List[str]:
+    """Generate UUID5 (SHA-1 hash based)
+    
+    Args:
+        namespace: UUID namespace to use
+        name: Base name for UUID generation
+        count: Number of UUIDs to generate
+        
+    Returns:
+        List of UUID5 strings
+    """
     return [str(uuid.uuid5(namespace, f"{name}_{i}")) for i in range(count)]
 
-def interactive_mode():
+def interactive_mode() -> None:
     """Interactive mode for UUID generation"""
     print("\n=== UUID Generator ===")
     print("Available UUID types:")
@@ -117,7 +168,8 @@ def interactive_mode():
         except Exception as e:
             print(f"An error occurred: {e}")
 
-def main():
+def main() -> None:
+    """Main function to handle command line arguments and orchestrate UUID generation"""
     parser = argparse.ArgumentParser(description='Generate random UUIDs')
     parser.add_argument('-t', '--type', choices=['1', '4', '3', '5'], default='4',
                        help='UUID type: 1 (timestamp), 4 (random), 3 (MD5), 5 (SHA-1)')
