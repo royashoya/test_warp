@@ -11,6 +11,7 @@ A comprehensive Python script for generating various types of UUIDs (Universally
 - **File Output**: Save generated UUIDs to files
 - **Input Validation**: Robust error handling and validation
 - **Type Safety**: Full type hints for better code reliability
+- **Performance Timing**: Shows generation time and performance metrics
 
 ## Recent Improvements (v2.0)
 

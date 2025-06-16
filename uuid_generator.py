@@ -9,6 +9,7 @@ Supports different UUID versions and batch generation.
 import uuid
 import argparse
 import sys
+import time
 from typing import List, Optional
 
 # Constants
@@ -110,6 +111,7 @@ def interactive_mode() -> None:
                 count = 1
             
             uuids = []
+            start_time = time.time()
             
             if choice == '1':
                 uuids = generate_uuid1(count)
@@ -145,10 +147,17 @@ def interactive_mode() -> None:
                 else:
                     uuids = generate_uuid5(namespace, name, count)
             
-            print(f"\nGenerated {len(uuids)} UUID(s):")
+            end_time = time.time()
+            generation_time = end_time - start_time
+            
+            print(f"\nGenerated {len(uuids)} UUID(s) in {generation_time:.4f} seconds:")
             print("-" * 40)
             for i, uuid_str in enumerate(uuids, 1):
                 print(f"{i:3d}: {uuid_str}")
+            print("-" * 40)
+            print(f"Generation time: {generation_time:.4f} seconds")
+            if count > 1:
+                print(f"Average time per UUID: {generation_time/count:.6f} seconds")
             
             # Ask if user wants to save to file
             save = input("\nSave to file? (y/N): ").strip().lower()
@@ -196,6 +205,7 @@ def main() -> None:
     
     # Generate UUIDs based on type
     uuids = []
+    start_time = time.time()
     
     if args.type == '1':
         uuids = generate_uuid1(args.count)
@@ -219,9 +229,17 @@ def main() -> None:
         else:
             uuids = generate_uuid5(namespace, args.name, args.count)
     
+    end_time = time.time()
+    generation_time = end_time - start_time
+    
     # Output UUIDs
     for uuid_str in uuids:
         print(uuid_str)
+    
+    # Display timing information
+    print(f"\nGenerated {len(uuids)} UUID(s) in {generation_time:.4f} seconds", file=sys.stderr)
+    if args.count > 1:
+        print(f"Average time per UUID: {generation_time/args.count:.6f} seconds", file=sys.stderr)
     
     # Save to file if specified
     if args.output:
