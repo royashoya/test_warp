@@ -37,6 +37,12 @@ A comprehensive Python script for generating various types of UUIDs (Universally
 - ✅ Better docstring format following Python conventions
 - ✅ More robust function structure
 
+### ⏱️ **Performance Timing (NEW)**
+- ✅ Added high-precision timing for UUID generation
+- ✅ Shows total generation time and average time per UUID
+- ✅ Available in both interactive and command-line modes
+- ✅ Non-intrusive timing display (stderr in CLI mode)
+
 ## Installation
 
 No additional dependencies required! The script uses only Python standard library modules.
@@ -158,6 +164,67 @@ python uuid_generator.py -t 4 -c 100 -o batch_ids.txt
 
 # Generate project-specific UUIDs
 python uuid_generator.py -t 5 -n "myproject-v1.0" -ns url -c 50 -o project_uuids.txt
+```
+
+### Performance Timing Examples
+
+```bash
+# Generate 1000 UUIDs and see timing
+python uuid_generator.py -c 1000
+# Output:
+# [1000 UUIDs printed]
+# Generated 1000 UUID(s) in 0.0123 seconds
+# Average time per UUID: 0.000012 seconds
+
+# Compare performance between UUID types
+python uuid_generator.py -t 1 -c 5000  # UUID1 timing
+python uuid_generator.py -t 4 -c 5000  # UUID4 timing
+
+# Timing in interactive mode shows detailed results
+python uuid_generator.py -i
+```
+
+## Performance Timing
+
+The UUID generator now includes high-precision timing functionality to help you monitor performance:
+
+### Features
+- **High-precision timing**: Uses Python's `time.time()` for microsecond accuracy
+- **Total generation time**: Shows how long it took to generate all UUIDs
+- **Average per UUID**: Calculates average time per UUID for batch operations
+- **Non-intrusive output**: Timing info goes to stderr in CLI mode, preserving clean UUID output
+
+### Command-Line Mode Timing
+```bash
+$ python uuid_generator.py -c 1000
+# [1000 UUIDs printed to stdout]
+
+Generated 1000 UUID(s) in 0.0123 seconds
+Average time per UUID: 0.000012 seconds
+```
+
+### Interactive Mode Timing
+```
+Generated 1000 UUID(s) in 0.0123 seconds:
+----------------------------------------
+  1: 550e8400-e29b-41d4-a716-446655440000
+  ...
+----------------------------------------
+Generation time: 0.0123 seconds
+Average time per UUID: 0.000012 seconds
+```
+
+### Performance Comparison Examples
+```bash
+# Compare different UUID types
+python uuid_generator.py -t 1 -c 10000  # UUID1 performance
+python uuid_generator.py -t 4 -c 10000  # UUID4 performance
+python uuid_generator.py -t 5 -n "test" -c 10000  # UUID5 performance
+
+# Test batch sizes
+python uuid_generator.py -c 100     # Small batch
+python uuid_generator.py -c 1000    # Medium batch
+python uuid_generator.py -c 10000   # Large batch
 ```
 
 ## Error Handling
